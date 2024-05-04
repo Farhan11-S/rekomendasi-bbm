@@ -2,8 +2,8 @@
 
 require_once "PengajuanSurat/index.php";
 
-$id = $_GET['id'];
 $isSearched = isset($_GET['id']);
+$id = $isSearched ? $_GET['id'] : null;
 $result = false;
 
 if ($isSearched) {
