@@ -4,9 +4,42 @@ require_once "PengajuanSurat/index.php";
 $t = time();
 $date = date("d-m-Y", $t);
 $id = $pengajuanSurat->generateID();
+$jenisUsaha = $pengajuanSurat->fetchAllJenisUsaha();
+
+function imageHandler($field)
+{
+    $target_dir = "uploads/";
+    $target_file = $target_dir . basename($_FILES[$field]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+    $check = getimagesize($_FILES[$field]["tmp_name"]);
+    $uploadOk = $check;
+    $uploadOk = !file_exists($target_file);
+    $uploadOk = $_FILES[$field]["size"] > 500000;
+    $uploadOk = !($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif");
+
+    if (!$uploadOk) {
+        echo "Sorry, your file was not uploaded.";
+    } else {
+        if (!move_uploaded_file($_FILES[$field]["tmp_name"], $target_file)) {
+            echo "Sorry, there was an error uploading your file.";
+        } else {
+            return basename($_FILES[$field]["name"]);
+        }
+    }
+
+    return false;
+}
+
 
 if (isset($_POST['kirim'])) {
-    // Proses login user
+
+    $fotoMesin = imageHandler("foto_mesin");
+    $fotoKTP = imageHandler("foto_ktp");
+    $fotoDomisili = imageHandler("foto_domisili");
+
     if ($pengajuanSurat->store([
         'id_input' => $_POST['id_input'],
         'nik' => $_POST['nik'],
@@ -20,11 +53,11 @@ if (isset($_POST['kirim'])) {
         'nomor_induk_spbu' => $_POST['nomor_induk_spbu'],
         'alamat_spbu' => $_POST['alamat_spbu'],
         'nomor_rangka_mesin' => $_POST['nomor_rangka_mesin'],
-        'foto_mesin' => $_POST['foto_mesin'],
-        'foto_ktp' => $_POST['foto_ktp'],
-        'foto_domisili' => $_POST['foto_domisili'],
+        'foto_mesin' => $fotoMesin,
+        'foto_ktp' => $fotoKTP,
+        'foto_domisili' => $fotoDomisili,
     ])) {
-        // header("location: index.php");
+        if ($fotoMesin && $fotoDomisili && $fotoKTP) header("location: index.php");
     } else {
         // Jika login gagal, ambil pesan error
         $error = $pengajuanSurat->getLastError();
@@ -67,7 +100,7 @@ if (isset($_POST['kirim'])) {
                     </b>
                 </div>
 
-                <form method="post" id="mainform">
+                <form method="post" id="mainform" enctype="multipart/form-data">
                     <div class="row">
                         <div class='col-md-6'>
                             <?php if (isset($error)) : ?>
@@ -80,40 +113,40 @@ if (isset($_POST['kirim'])) {
 
                             <?php endif; ?>
                             <div class="form-group has-feedback" align="left">
-                                <label>1) Tanggal Input</label>
+                                <label>1) Tanggal Input <p style="color: red; display: inline-block;">*</p></label>
                                 <input type="text" name="tanggal" value="<?php echo $date ?>" disabled>
                             </div>
 
                             <div class="form-group has-feedback" align="left">
-                                <label>2) No ID Permohonan</label>
+                                <label>2) No ID Permohonan <p style="color: red; display: inline-block;">*</p></label>
                                 <input name="id_input" required type="text" class="form-control" placeholder="Masukkan Nomor ID Permohonan" value="<?php echo  $id ?>" disabled>
                                 <input name="id_input" required type="hidden" class="form-control" placeholder="Masukkan Nomor ID Permohonan" value="<?php echo $id ?>">
                             </div>
 
                             <div class="form-group has-feedback" align="left">
-                                <label>3) NIK </label>
+                                <label>3) NIK <p style="color: red; display: inline-block;">*</p></label>
                                 <input name="nik" required type="text" class="form-control" placeholder="NIK wajib diisi">
                             </div>
 
                             <div class="form-group has-feedback" align="left">
-                                <label>4) Nama Lengkap</label>
+                                <label>4) Nama Lengkap <p style="color: red; display: inline-block;">*</p></label>
                                 <input name="nama_lengkap" required type="text" class="form-control" placeholder="Masukkan Nama Lengkap">
                             </div>
 
                             <div class="form-group has-feedback" align="left">
-                                <label>5) Alamat</label>
+                                <label>5) Alamat <p style="color: red; display: inline-block;">*</p></label>
                                 <input name="alamat" required type="text" class="form-control" placeholder="Masukkan Alamat">
                             </div>
 
                             <div class="form-group has-feedback" align="left">
-                                <label>6) No. HP</label>
+                                <label>6) No. HP <p style="color: red; display: inline-block;">*</p></label>
                                 <input name="no_hp" required type="text" class="form-control" placeholder="Masukkan No. HP">
                             </div>
                         </div>
                         <div class='col-md-6'>
                             <div class="form-group" align="left">
-                                <label>7) Jenis BBM</label>
-                                <select id="jenis_bbm" class="form-control" name="jenis_bbm" style="width: 45%;">
+                                <label>7) Jenis BBM <p style="color: red; display: inline-block;">*</p></label>
+                                <select id="jenis_bbm" class="form-control" name="jenis_bbm" style="width: 45%;" required>
                                     <option value="">Pilih </option>
                                     <option value="Minyak Tanah">Minyak Tanah</option>
                                     <option value="Bensin (Gasoline) RON 88">Bensin (Gasoline) RON 88</option>
@@ -123,8 +156,8 @@ if (isset($_POST['kirim'])) {
 
                             </div>
                             <div class="form-group has-feedback" align="left">
-                                <label>8) Alokasi Volume BBM (liter / hari) </label>
-                                <input name="jumlah" type="text" class="form-control" placeholder="Tuliskan angka & huruf, contoh : 25 (dua puluh lima)">
+                                <label>8) Alokasi Volume BBM (liter / hari) <p style="color: red; display: inline-block;">*</p></label>
+                                <input name="volume_bbm_harian" type="text" class="form-control" placeholder="Tuliskan angka & huruf, contoh : 25 (dua puluh lima)" required>
                             </div>
                             <div style="margin: 20px 0px">
                                 <h4><b>9) BBM tersebut akan kami pergunakan untuk : </b> </h4>
@@ -132,34 +165,25 @@ if (isset($_POST['kirim'])) {
                             <div class='row'>
 
                                 <div align="left" class='form-group' style="margin-left: 17px;">
-                                    <label>a) Pilih Jenis Usaha</label>
-                                    <select id="jenis_usaha" name="jenis_usaha" class="form-control" onchange="populate(this.id,'jenis_alat')">
+                                    <label>a) Pilih Jenis Usaha <p style="color: red; display: inline-block;">*</p></label>
+                                    <select id="jenis_usaha" class="form-control" onchange="populate(this.value,'jenis_alat')" required>
                                         <option value=''>Pilih</option>
-                                        <option value='Usaha Mikro'>Usaha Mikro</option>
-                                        <option value='Usaha Pertanian'>Usaha Pertanian</option>
-                                        <option value='Usaha Perikanan'>Usaha Perikanan</option>
-                                        <option value='Pelayanan Umum'>Pelayanan Umum</option>
+                                        <?php
+                                        foreach ($jenisUsaha['jenis_usaha'] as $value) {
+                                            echo "<option value='$value'>$value</option>";
+                                        }
+                                        ?>
                                     </select>
                                 </div>
 
                                 <div align="left" class='form-group' style="margin-left: 17px;">
-                                    <label>b) Pilih Nama/Jenis Alat</label>
-                                    <select name='jenis_alat' class='form-control' id='jenis_alat'>
-                                        <option value=''>Pilih</option>
-                                        <option value='Mesin Perkakas'>Mesin Perkakas (usaha mikro)</option>
-                                        <option value='Traktor'>Traktor (pertanian)</option>
-                                        <option value='Genzet'>Genzet (pertanian)</option>
-                                        <option value='Huller'>Huller (pertanian)</option>
-                                        <option value='Mesin Tempel Perahu '>Mesin Tempel Perahu (perikanan)</option>
-                                        <option value='Kincir'>Kincir (perikanan)</option>
-                                        <option value='Sosial'>Sosial (pelayanan umum)</option>
-                                        <option value='Kesehatan'>Kesehatan (pelayanan umum)</option>
-                                    </select>
+                                    <label>b) Pilih Nama/Jenis Alat <p style="color: red; display: inline-block;">*</p></label>
+                                    <select name='jenis_usaha_id' class='form-control' id='jenis_alat' disabled required></select>
                                 </div>
 
                                 <div align="left" class='form-group' style="margin-left: 17px;">
-                                    <label>c) Nama Usaha</label>
-                                    <input name="nama_usaha" type="text" class="form-control" placeholder="Isikan alat yg digunakan....">
+                                    <label>c) Nama Usaha <p style="color: red; display: inline-block;">*</p></label>
+                                    <input name="nama_usaha" type="text" class="form-control" placeholder="Isikan alat yg digunakan...." required>
 
                                 </div>
                             </div>
@@ -168,38 +192,33 @@ if (isset($_POST['kirim'])) {
 
                     <div class="row">
                         <div class="form-group has-feedback" align="left" style="margin-left: 17px;">
-                            <label>10) Nomor Induk SPBU</label>
-                            <input name="nomor_induk_spbu" type="text" class="form-control" placeholder="Isikan Nomor Induk SPBU">
+                            <label>10) Nomor Induk SPBU <p style="color: red; display: inline-block;">*</p></label>
+                            <input name="nomor_induk_spbu" type="text" class="form-control" placeholder="Isikan Nomor Induk SPBU" required>
                         </div>
 
                         <div class="form-group has-feedback" align="left" style="margin-left: 17px;">
-                            <label>11) Nomor Induk SPBU</label>
-                            <input name="nomor_induk_spbu" type="text" class="form-control" placeholder="Isikan Nomor Induk SPBU">
-                        </div>
-
-                        <div class="form-group has-feedback" align="left" style="margin-left: 17px;">
-                            <label>12) Alamat SPBU</label>
+                            <label>11) Alamat SPBU <p style="color: red; display: inline-block;">*</p></label>
                             <input name="alamat_spbu" type="text" class="form-control" placeholder="Isikan Alamat SPBU">
                         </div>
 
                         <div class="form-group has-feedback" align="left" style="margin-left: 17px;">
-                            <label>13) Nomor Rangka Mesin</label>
-                            <input name="nomor_rangka_mesin" type="text" class="form-control" placeholder="Isikan Nomor Rangka Mesin">
+                            <label>12) Nomor Rangka Mesin <p style="color: red; display: inline-block;">*</p></label>
+                            <input name="nomor_rangka_mesin" type="text" class="form-control" placeholder="Isikan Nomor Rangka Mesin" required>
                         </div>
 
                         <div class="form-group has-feedback" align="left" style="margin-left: 17px;">
-                            <label class="form-label">14) Foto Mesin/Alat Penggerak</label>
-                            <input type="file" class="form-control" name="foto_mesin" />
+                            <label class="form-label">13) Foto Mesin/Alat Penggerak <p style="color: red; display: inline-block;">*</p></label>
+                            <input type="file" class="form-control" name="foto_mesin" required />
                         </div>
 
                         <div class="form-group has-feedback" align="left" style="margin-left: 17px;">
-                            <label class="form-label">15) Foto KTP</label>
-                            <input type="file" class="form-control" name="foto_ktp" />
+                            <label class="form-label">14) Foto KTP <p style="color: red; display: inline-block;">*</p></label>
+                            <input type="file" class="form-control" name="foto_ktp" required />
                         </div>
 
                         <div class="form-group has-feedback" align="left" style="margin-left: 17px;">
-                            <label class="form-label">16) Foto Keterangan Domisili Tempat Usaha dari Kepala Desa</label>
-                            <input type="file" class="form-control" name="foto_domisili" />
+                            <label class="form-label">15) Foto Keterangan Domisili Tempat Usaha dari Kepala Desa <p style="color: red; display: inline-block;">*</p></label>
+                            <input type="file" class="form-control" name="foto_domisili" required />
                         </div>
                     </div>
 
@@ -256,12 +275,24 @@ if (isset($_POST['kirim'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <script>
+        const jenisAlat = <?php echo json_encode($jenisUsaha['jenis_alat']) ?>
+
         $.fn.isValid = function() {
             return this[0].reportValidity()
         }
 
+        function populate(jenisUsaha) {
+            const select = document.getElementById('jenis_alat');
+
+            const tmp = jenisAlat
+                .filter((v) => v.jenis_usaha === jenisUsaha)
+                .map((v) => `<option value='${v.id}'>${v.jenis_alat}</option>`)
+
+            select.disabled = false
+            select.innerHTML = `<option value=''>Pilih</option>` + tmp.join()
+        }
+
         function validateForm() {
-            console.log('babi', $("#mainform").isValid());
             if ($("#mainform").isValid()) {
                 $("#myModal").modal('show')
             }
