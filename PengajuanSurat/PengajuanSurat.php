@@ -74,6 +74,16 @@ class PengajuanSurat
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function fetchAllJenisUsaha()
+    {
+        $stmt = $this->db->prepare("SELECT * FROM jenis_usaha");
+        $stmt->execute();
+        $result['jenis_alat'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result['jenis_usaha'] = array_unique(array_column($result['jenis_alat'], 'jenis_usaha'));
+
+        return $result;
+    }
+
     public function updateStatus($id, $status, $note, $updated_by)
     {
         try {
