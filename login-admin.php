@@ -5,7 +5,7 @@ require_once "Auth/index.php";
 
 // Cek status login user
 if ($user->isLoggedIn()) {
-    header("location: dashboard.php"); //redirect ke index
+    header("location: dashboard"); //redirect ke index
 }
 
 //jika ada data yg dikirim
@@ -16,7 +16,7 @@ if (isset($_POST['kirim'])) {
 
     // Proses login user
     if ($user->login($nama, $password)) {
-        header("location: dashboard.php");
+        header("location: dashboard");
     } else {
         // Jika login gagal, ambil pesan error
         $error = $user->getLastError();

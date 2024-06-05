@@ -8,6 +8,7 @@ $result = false;
 
 if ($isSearched) {
     $result = $pengajuanSurat->fetchByIDInput($id);
+    $jenisUsaha = $pengajuanSurat->fetchJenisUsahaByID($result['jenis_usaha_id']);
 }
 ?>
 
@@ -88,9 +89,6 @@ if ($isSearched) {
                     <li class="nav-item bg-light">
                         <a class="nav-link text-dark rounded-0" href="form.php">Ajukan Permohonan</a>
                     </li>
-                    <li class="nav-item bg-light">
-                        <a class="nav-link text-dark rounded-0" href="#">Perpanjang Surat</a>
-                    </li>
                 </ul>
             </div>
             <form class="form my-2">
@@ -101,52 +99,59 @@ if ($isSearched) {
                         type="submit">Search</button>
 
                     <?php if ($isSearched) : ?>
-                    <table class="table table-bordered">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th scope="col" colspan="4">Surat yang Diajukan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!$result) : ?>
-                            <tr>
-                                <td scope="row" class="">Data Tidak Ditemukan</td>
-                            </tr>
-                            <?php else : ?>
-                            <tr>
-                                <td scope="row" class="">ID Surat</td>
-                                <td><?php echo $result['id_input'] ?></td>
-                            </tr>
-                            <tr>
-                                <td scope="row" class="">Nama</td>
-                                <td><?php echo $result['nama_lengkap'] ?? '' ?></td>
-                            </tr>
-                            <tr>
-                                <td scope="row">NIK</td>
-                                <td><?php echo $result['nik'] ?? '' ?></td>
-                            </tr>
-                            <tr>
-                                <td scope="row">Alamat Usaha</td>
-                                <td><?php echo $result['alamat_usaha'] ?? '' ?></td>
-                            </tr>
-                            <tr>
-                                <td scope="row">Jenis Usaha</td>
-                                <td><?php echo $result['jenis_usaha'] ?? '' ?></td>
-                            </tr>
-                            <tr>
-                                <td scope="row">Nama Usaha</td>
-                                <td><?php echo $result['nama_usaha'] ?? '' ?></td>
-                            </tr>
-                            <tr>
-                                <td scope="row">Status Pengajuan</td>
-                                <td><?php echo $result['pengajuan_surat']['status'] ?></td>
-                            </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                        <table class="table table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col" colspan="4">Surat yang Diajukan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!$result) : ?>
+                                    <tr>
+                                        <td scope="row" class="">Data Tidak Ditemukan</td>
+                                    </tr>
+                                <?php else : ?>
+                                    <tr>
+                                        <td scope="row" class="">ID Surat</td>
+                                        <td><?php echo $result['id_input'] ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row" class="">Nama</td>
+                                        <td><?php echo $result['nama_lengkap'] ?? '' ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row">NIK</td>
+                                        <td><?php echo $result['nik'] ?? '' ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row">Alamat Usaha</td>
+                                        <td><?php echo $result['alamat_spbu'] ?? '' ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row">Jenis Usaha</td>
+                                        <td><?php echo $jenisUsaha['jenis_usaha'] ?? '' ?> - <?php echo $jenisUsaha['jenis_alat'] ?? '' ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row">Nama Usaha</td>
+                                        <td><?php echo $result['nama_usaha'] ?? '' ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td scope="row">Status Pengajuan</td>
+                                        <td><?php echo $result['pengajuan_surat']['status'] ?></td>
+                                    </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+
+
                     <?php endif; ?>
                 </div>
             </form>
+            <?php if (!empty($result) && $result['pengajuan_surat']['status'] == 'Tidak Berlaku') : ?>
+                <form action="form-perpanjangan.php" method="post" class="width-100 text-center">
+                    <button type="submit" class="btn btn-success mx-auto" name="redirect" value="<?= $id ?>">Perpanjang Surat</button>
+                </form>
+            <?php endif; ?>
         </div>
     </div>
 

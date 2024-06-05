@@ -3,7 +3,7 @@
 /**
  * Class Auth untuk melakukan login dan registrasi user baru
  */
-class PengajuanSurat
+class PerpanjanganSurat
 {
     /**
      * @var
@@ -62,18 +62,13 @@ class PengajuanSurat
             $stmt2->execute([$suratRekomendasi['id']]);
 
             $suratRekomendasi['pengajuan_surat'] = $stmt2->fetch(PDO::FETCH_ASSOC);
-
-            $stmt3 = $this->db->prepare("SELECT * FROM perpanjangan_surat WHERE surat_rekomendasi_id = ? AND NOT status = 'AKTIF'  LIMIT 1");
-            $stmt3->execute([$suratRekomendasi['id']]);
-
-            $suratRekomendasi['perpanjangan_surat'] = $stmt3->fetch(PDO::FETCH_ASSOC);
         }
         return $suratRekomendasi;
     }
 
     public function fetchAll()
     {
-        $stmt = $this->db->prepare("SELECT * FROM surat_rekomendasi LEFT JOIN pengajuan_surat ON surat_rekomendasi.id = pengajuan_surat.surat_rekomendasi_id");
+        $stmt = $this->db->prepare("SELECT * FROM surat_rekomendasi RIGHT JOIN perpanjangan_surat ON surat_rekomendasi.id = perpanjangan_surat.surat_rekomendasi_id");
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -101,7 +96,7 @@ class PengajuanSurat
     public function updateStatus($id, $status, $note, $updated_by)
     {
         try {
-            $stmt = $this->db->prepare("UPDATE pengajuan_surat SET status=:status, note=:note, updated_by=:updated_by WHERE id=:id");
+            $stmt = $this->db->prepare("UPDATE perpanjangan_surat SET status=:status, note=:note, updated_by=:updated_by WHERE id=:id");
             $stmt->bindParam(":status", $status);
             $stmt->bindParam(":note", $note);
             $stmt->bindParam(":updated_by", $updated_by);
@@ -131,31 +126,13 @@ class PengajuanSurat
     public function store($data)
     {
         try {
-
-            $stmt = $this->db->prepare("INSERT INTO surat_rekomendasi (id_input, nik, nama_lengkap, alamat, no_hp, jenis_bbm, volume_bbm_harian, jenis_usaha_id, nama_usaha, nomor_induk_spbu, alamat_spbu, nomor_rangka_mesin, foto_mesin, foto_ktp, foto_domisili) VALUES(:id_input, :nik, :nama_lengkap, :alamat, :no_hp, :jenis_bbm, :volume_bbm_harian, :jenis_usaha_id, :nama_usaha, :nomor_induk_spbu, :alamat_spbu, :nomor_rangka_mesin, :foto_mesin, :foto_ktp, :foto_domisili);");
-            $stmt->bindParam(":id_input", $data['id_input']);
-            $stmt->bindParam(":nik", $data['nik']);
-            $stmt->bindParam(":nama_lengkap", $data['nama_lengkap']);
-            $stmt->bindParam(":alamat", $data['alamat']);
-            $stmt->bindParam(":no_hp", $data['no_hp']);
-            $stmt->bindParam(":jenis_bbm", $data['jenis_bbm']);
-            $stmt->bindParam(":volume_bbm_harian", $data['volume_bbm_harian']);
-            $stmt->bindParam(":jenis_usaha_id", $data['jenis_usaha_id']);
-            $stmt->bindParam(":nama_usaha", $data['nama_usaha']);
-            $stmt->bindParam(":nomor_induk_spbu", $data['nomor_induk_spbu']);
-            $stmt->bindParam(":alamat_spbu", $data['alamat_spbu']);
-            $stmt->bindParam(":nomor_rangka_mesin", $data['nomor_rangka_mesin']);
-            $stmt->bindParam(":foto_mesin", $data['foto_mesin']);
-            $stmt->bindParam(":foto_ktp", $data['foto_ktp']);
-            $stmt->bindParam(":foto_domisili", $data['foto_domisili']);
+            $suratRekomendasi = $this->fetchByIDInput($data['id_input']);
+            if (empty($suratRekomendasi)) return false;
+            $stmt = $this->db->prepare("INSERT INTO perpanjangan_surat (surat_rekomendasi_id, foto_keterangan, status) VALUES (:surat_rekomendasi_id, :foto_keterangan, 'Menunggu Konfirmasi');");
+            $stmt->bindParam(":surat_rekomendasi_id", $suratRekomendasi['id']);
+            $stmt->bindParam(":foto_keterangan", $data['foto_keterangan']);
 
             $stmt->execute();
-            $surat_rekomendasi_id = $this->db->lastInsertId();
-
-            $stmt2 = $this->db->prepare("INSERT INTO pengajuan_surat (surat_rekomendasi_id, status) VALUES(:surat_rekomendasi_id, 'Menunggu Konfirmasi');");
-            $stmt2->bindParam(":surat_rekomendasi_id", $surat_rekomendasi_id);
-
-            $stmt2->execute();
 
             return true;
         } catch (PDOException $e) {

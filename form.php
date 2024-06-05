@@ -57,7 +57,7 @@ if (isset($_POST['kirim'])) {
         'foto_ktp' => $fotoKTP,
         'foto_domisili' => $fotoDomisili,
     ])) {
-        if ($fotoMesin && $fotoDomisili && $fotoKTP) header("location: index.php");
+        header("location: index.php");
     } else {
         // Jika login gagal, ambil pesan error
         $error = $pengajuanSurat->getLastError();
