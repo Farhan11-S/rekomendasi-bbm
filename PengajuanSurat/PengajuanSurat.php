@@ -63,7 +63,7 @@ class PengajuanSurat
 
             $suratRekomendasi['pengajuan_surat'] = $stmt2->fetch(PDO::FETCH_ASSOC);
 
-            $stmt3 = $this->db->prepare("SELECT * FROM perpanjangan_surat WHERE surat_rekomendasi_id = ? AND NOT status = 'AKTIF'  LIMIT 1");
+            $stmt3 = $this->db->prepare("SELECT * FROM perpanjangan_surat WHERE surat_rekomendasi_id = ? AND status = 'MENUNGGU KONFIRMASI'  LIMIT 1");
             $stmt3->execute([$suratRekomendasi['id']]);
 
             $suratRekomendasi['perpanjangan_surat'] = $stmt3->fetch(PDO::FETCH_ASSOC);

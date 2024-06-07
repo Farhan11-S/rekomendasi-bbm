@@ -93,7 +93,7 @@ class PerpanjanganSurat
         return $result;
     }
 
-    public function updateStatus($id, $status, $note, $updated_by)
+    public function updateStatus($id, $status, $note, $updated_by, $suratRekomendasiID)
     {
         try {
             $stmt = $this->db->prepare("UPDATE perpanjangan_surat SET status=:status, note=:note, updated_by=:updated_by WHERE id=:id");
@@ -103,6 +103,14 @@ class PerpanjanganSurat
             $stmt->bindParam(":id", $id);
 
             $stmt->execute();
+
+            if ($status == 'Aktif') {
+                $stmt = $this->db->prepare("UPDATE pengajuan_surat SET status=:status WHERE surat_rekomendasi_id=:surat_rekomendasi_id");
+                $stmt->bindParam(":status", $status);
+                $stmt->bindParam(":surat_rekomendasi_id", $suratRekomendasiID);
+
+                $stmt->execute();
+            }
             return true;
         } catch (PDOException $e) {
             // Jika terjadi error

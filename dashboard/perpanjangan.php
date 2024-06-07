@@ -15,7 +15,7 @@ if (isset($_POST['signout'])) {
 }
 
 if (isset($_POST['status'])) {
-  if ($perpanjanganSurat->updateStatus($_POST['id'], $_POST['status'], $_POST['note'], $_SESSION['user_session'])) {
+  if ($perpanjanganSurat->updateStatus($_POST['id'], $_POST['status'], $_POST['note'], $_SESSION['user_session'], $_POST['surat_rekomendasi_id'])) {
     header("location: dashboard");
   }
 }
@@ -150,6 +150,7 @@ $dataJenisUsaha = $perpanjanganSurat->fetchAllJenisUsaha();
                     <label for="note">Catatan</label>
                     <div class="input-group mb-3">
                       <input type="text" class="form-control" id="note" name="note" aria-describedby="basic-addon3" placeholder="Masukkan catatan (required)" required>
+                      <input type="text" hidden name="surat_rekomendasi_id" id="surat_rekomendasi_id">
                     </div>
                     <input type="hidden" name="id" id="hidden_id" value="">
                     <button type="submit" class="btn btn-success" name="status" value="Aktif">Terima</button>
@@ -191,6 +192,7 @@ $dataJenisUsaha = $perpanjanganSurat->fetchAllJenisUsaha();
       const jenisUsaha = dataJenisUsaha.jenis_alat.find((v) => v['id'] == curr_data.jenis_usaha_id)?.['jenis_usaha'];
       $('#myModalLabel').text(curr_data.id_input)
       $('#id_input').text(curr_data.id_input)
+      $('#surat_rekomendasi_id').val(curr_data.surat_rekomendasi_id)
       $('#nama_lengkap').text(curr_data.nama_lengkap)
       $('#nik').text(curr_data.nik)
       $('#alamat_spbu').text(curr_data.alamat_spbu)
