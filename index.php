@@ -135,6 +135,10 @@ if ($isSearched) {
                                         <td scope="row">Status Pengajuan</td>
                                         <td><?php echo $result['pengajuan_surat']['status'] ?></td>
                                     </tr>
+                                    <tr>
+                                        <td scope="row">Status Pengajuan</td>
+                                        <td><?php echo $result['pengajuan_surat']['note'] ?></td>
+                                    </tr>
                                 <?php endif; ?>
                             </tbody>
                         </table>
@@ -155,7 +159,7 @@ if ($isSearched) {
                     <input type="hidden" name="nik" value="<?= $result['nik'] ?>">
                     <input type="hidden" name="alamat" value="<?= $result['alamat'] ?>">
                     <input type="hidden" name="alamat_spbu" value="<?= $result['alamat_spbu'] ?>">
-                    <input type="hidden" name="jenis_usaha" value="<?=  $jenisUsaha['jenis_usaha'] ?? '' ?>">
+                    <input type="hidden" name="jenis_usaha" value="<?= $jenisUsaha['jenis_usaha'] ?? '' ?>">
                     <input type="hidden" name="jenis_alat" value="<?= $jenisUsaha['jenis_alat'] ?? '' ?>">
                     <input type="hidden" name="nama_usaha" value="<?= $result['nama_usaha'] ?>">
                     <input type="hidden" name="volume_bbm_harian" value="<?= $result['volume_bbm_harian'] ?>">

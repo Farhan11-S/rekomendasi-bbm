@@ -5,18 +5,18 @@ require_once "../PengajuanSurat/index.php";
 
 // Cek status login user
 if (!$user->isLoggedIn()) {
-    header("location: login-admin.php"); //redirect ke index
+    header("location: ../login-admin.php"); //redirect ke index
 }
 
 if (isset($_POST['signout'])) {
     if ($user->logout()) {
-        header("location: index.php");
+        header("location: ../index.php");
     }
 }
 
 if (isset($_POST['status'])) {
     if ($pengajuanSurat->updateStatus($_POST['id'], $_POST['status'], $_POST['note'], $_SESSION['user_session'])) {
-        header("location: dashboard");
+        header("location: ./index.php");
     }
 }
 
@@ -37,13 +37,13 @@ $dataJenisUsaha = $pengajuanSurat->fetchAllJenisUsaha();
                 <div class="sidebar-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="/dashboard">
+                            <a class="nav-link active" href="./index.php">
                                 <span data-feather="home"></span>
                                 Pengajuan Surat <span class="sr-only">(current)</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/dashboard/perpanjangan.php">
+                            <a class="nav-link" href="./perpanjangan.php">
                                 <span data-feather="file"></span>
                                 Perpanjangan Surat
                             </a>
@@ -206,9 +206,9 @@ $dataJenisUsaha = $pengajuanSurat->fetchAllJenisUsaha();
             $('#nama_usaha').text(curr_data.nama_usaha)
             $('#status').text(curr_data.status)
             $('#hidden_id').val(curr_data.id)
-            $('#foto_ktp').attr('src', '/uploads/' + curr_data.foto_ktp)
-            $('#foto_mesin').attr('src', '/uploads/' + curr_data.foto_mesin)
-            $('#foto_domisili').attr('src', '/uploads/' + curr_data.foto_domisili)
+            $('#foto_ktp').attr('src', '../uploads/' + curr_data.foto_ktp)
+            $('#foto_mesin').attr('src', '../uploads/' + curr_data.foto_mesin)
+            $('#foto_domisili').attr('src', './uploads/' + curr_data.foto_domisili)
             if (curr_data.status !== 'Menunggu Konfirmasi') $('#form_update').hide()
             $('#myModal').modal('show')
         }

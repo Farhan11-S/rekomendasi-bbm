@@ -30,6 +30,7 @@ CREATE TABLE `pengajuan_surat` (
 CREATE TABLE `perpanjangan_surat` (
   `id` int NOT NULL AUTO_INCREMENT,
   `surat_rekomendasi_id` int DEFAULT NULL,
+  `foto_keterangan` varchar(100) DEFAULT NULL,
   `status` varchar(100) DEFAULT NULL,
   `note` varchar(100) DEFAULT NULL,
   `updated_by` int DEFAULT NULL,
