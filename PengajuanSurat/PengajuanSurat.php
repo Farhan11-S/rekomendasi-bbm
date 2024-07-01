@@ -135,7 +135,7 @@ class PengajuanSurat
     {
         try {
 
-            $stmt = $this->db->prepare("INSERT INTO surat_rekomendasi (id_input, nik, nama_lengkap, alamat, no_hp, jenis_bbm, volume_bbm_harian, jenis_usaha_id, nama_usaha, nomor_induk_spbu, alamat_spbu, nomor_rangka_mesin, foto_mesin, foto_ktp, foto_domisili) VALUES(:id_input, :nik, :nama_lengkap, :alamat, :no_hp, :jenis_bbm, :volume_bbm_harian, :jenis_usaha_id, :nama_usaha, :nomor_induk_spbu, :alamat_spbu, :nomor_rangka_mesin, :foto_mesin, :foto_ktp, :foto_domisili);");
+            $stmt = $this->db->prepare("INSERT INTO surat_rekomendasi (id_input, nik, nama_lengkap, alamat, no_hp, jenis_bbm, volume_bbm_harian, jenis_usaha_id, nama_usaha, nomor_induk_spbu, alamat_spbu, nomor_rangka_mesin, foto_mesin, foto_ktp, foto_domisili, merk, tipe) VALUES(:id_input, :nik, :nama_lengkap, :alamat, :no_hp, :jenis_bbm, :volume_bbm_harian, :jenis_usaha_id, :nama_usaha, :nomor_induk_spbu, :alamat_spbu, :nomor_rangka_mesin, :foto_mesin, :foto_ktp, :foto_domisili, :merk, :tipe);");
             $stmt->bindParam(":id_input", $data['id_input']);
             $stmt->bindParam(":nik", $data['nik']);
             $stmt->bindParam(":nama_lengkap", $data['nama_lengkap']);
@@ -151,6 +151,8 @@ class PengajuanSurat
             $stmt->bindParam(":foto_mesin", $data['foto_mesin']);
             $stmt->bindParam(":foto_ktp", $data['foto_ktp']);
             $stmt->bindParam(":foto_domisili", $data['foto_domisili']);
+            $stmt->bindParam(":merk", $data['merk']);
+            $stmt->bindParam(":tipe", $data['tipe']);
 
             $stmt->execute();
             $surat_rekomendasi_id = $this->db->lastInsertId();

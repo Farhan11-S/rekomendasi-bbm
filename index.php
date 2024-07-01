@@ -133,10 +133,10 @@ if ($isSearched) {
                                     </tr>
                                     <tr>
                                         <td scope="row">Status Pengajuan</td>
-                                        <td><?php echo $result['pengajuan_surat']['status'] ?></td>
+                                        <?= ($result['pengajuan_surat']['status'] == 'Aktif' ? '<td style="background-color: green; color:white">' : '<td style="background-color: red; color: white">') . $result['pengajuan_surat']['status'] . '</td>' ?>
                                     </tr>
                                     <tr>
-                                        <td scope="row">Status Pengajuan</td>
+                                        <td scope="row">Catatan</td>
                                         <td><?php echo $result['pengajuan_surat']['note'] ?></td>
                                     </tr>
                                 <?php endif; ?>

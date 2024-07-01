@@ -118,6 +118,14 @@ $dataJenisUsaha = $pengajuanSurat->fetchAllJenisUsaha();
                                             <td id="alamat_spbu"></td>
                                         </tr>
                                         <tr>
+                                            <td scope="row">Tipe</td>
+                                            <td id="tipe"></td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row">Merk</td>
+                                            <td id="merk"></td>
+                                        </tr>
+                                        <tr>
                                             <td scope="row">Jenis Usaha</td>
                                             <td id="jenis_usaha"></td>
                                         </tr>
@@ -202,12 +210,14 @@ $dataJenisUsaha = $pengajuanSurat->fetchAllJenisUsaha();
             $('#nama_lengkap').text(curr_data.nama_lengkap)
             $('#nik').text(curr_data.nik)
             $('#alamat_spbu').text(curr_data.alamat_spbu)
+            $('#tipe').text(curr_data.tipe)
+            $('#merk').text(curr_data.merk)
             $('#jenis_usaha').text(`${jenisAlat ?? ''} - ${jenisUsaha ?? ''}`)
             $('#nama_usaha').text(curr_data.nama_usaha)
             $('#status').text(curr_data.status)
             $('#hidden_id').val(curr_data.id)
-            $('#foto_ktp').attr('src', '../uploads/' + curr_data.foto_ktp)
-            $('#foto_mesin').attr('src', '../uploads/' + curr_data.foto_mesin)
+            $('#foto_ktp').attr('src', './uploads/' + curr_data.foto_ktp)
+            $('#foto_mesin').attr('src', './uploads/' + curr_data.foto_mesin)
             $('#foto_domisili').attr('src', './uploads/' + curr_data.foto_domisili)
             if (curr_data.status !== 'Menunggu Konfirmasi') $('#form_update').hide()
             $('#myModal').modal('show')
