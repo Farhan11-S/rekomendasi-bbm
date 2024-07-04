@@ -172,10 +172,8 @@ $dataJenisUsaha = $pengajuanSurat->fetchAllJenisUsaha();
                                                 placeholder="Masukkan catatan (required)" required>
                                         </div>
                                         <input type="hidden" name="id" id="hidden_id" value="">
-                                        <button type="submit" class="btn btn-success" name="status"
-                                            value="Aktif">Terima</button>
-                                        <button type="submit" class="btn btn-danger" name="status"
-                                            value="Ditolak">Tolak</button>
+                                        <button type="submit" class="btn btn-success" name="status" value="Menunggu Validasi Kepala Dinas">Terima</button>
+                                        <button type="submit" class="btn btn-danger" name="status" value="Ditolak">Tolak</button>
                                     </form>
                                 </div>
                             </div>
@@ -215,25 +213,25 @@ $dataJenisUsaha = $pengajuanSurat->fetchAllJenisUsaha();
     function openModal(index) {
         const curr_data = result[index]
 
-        const jenisAlat = dataJenisUsaha.jenis_alat.find((v) => v['id'] == curr_data.jenis_usaha_id)?. ['jenis_alat'];
-        const jenisUsaha = dataJenisUsaha.jenis_alat.find((v) => v['id'] == curr_data.jenis_usaha_id)?. ['jenis_usaha'];
-        $('#myModalLabel').text(curr_data.id_input)
-        $('#id_input').text(curr_data.id_input)
-        $('#nama_lengkap').text(curr_data.nama_lengkap)
-        $('#nik').text(curr_data.nik)
-        $('#alamat_spbu').text(curr_data.alamat_spbu)
-        $('#tipe').text(curr_data.tipe)
-        $('#merk').text(curr_data.merk)
-        $('#jenis_usaha').text(`${jenisAlat ?? ''} - ${jenisUsaha ?? ''}`)
-        $('#nama_usaha').text(curr_data.nama_usaha)
-        $('#status').text(curr_data.status)
-        $('#hidden_id').val(curr_data.id)
-        $('#foto_ktp').attr('src', './uploads/' + curr_data.foto_ktp)
-        $('#foto_mesin').attr('src', './uploads/' + curr_data.foto_mesin)
-        $('#foto_domisili').attr('src', './uploads/' + curr_data.foto_domisili)
-        if (curr_data.status !== 'Menunggu Konfirmasi') $('#form_update').hide()
-        $('#myModal').modal('show')
-    }
+            const jenisAlat = dataJenisUsaha.jenis_alat.find((v) => v['id'] == curr_data.jenis_usaha_id)?.['jenis_alat'];
+            const jenisUsaha = dataJenisUsaha.jenis_alat.find((v) => v['id'] == curr_data.jenis_usaha_id)?.['jenis_usaha'];
+            $('#myModalLabel').text(curr_data.id_input)
+            $('#id_input').text(curr_data.id_input)
+            $('#nama_lengkap').text(curr_data.nama_lengkap)
+            $('#nik').text(curr_data.nik)
+            $('#alamat_spbu').text(curr_data.alamat_spbu)
+            $('#tipe').text(curr_data.tipe)
+            $('#merk').text(curr_data.merk)
+            $('#jenis_usaha').text(`${jenisAlat ?? ''} - ${jenisUsaha ?? ''}`)
+            $('#nama_usaha').text(curr_data.nama_usaha)
+            $('#status').text(curr_data.status)
+            $('#hidden_id').val(curr_data.id)
+            $('#foto_ktp').attr('src', './uploads/' + curr_data.foto_ktp)
+            $('#foto_mesin').attr('src', './uploads/' + curr_data.foto_mesin)
+            $('#foto_domisili').attr('src', './uploads/' + curr_data.foto_domisili)
+            if (curr_data.status !== 'Menunggu Verifikasi Sekretariat') $('#form_update').hide()
+            $('#myModal').modal('show')
+        }
     </script>
 </body>
 

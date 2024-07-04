@@ -165,7 +165,7 @@ class PengajuanSurat
             $stmt->execute();
             $surat_rekomendasi_id = $this->db->lastInsertId();
 
-            $stmt2 = $this->db->prepare("INSERT INTO pengajuan_surat (surat_rekomendasi_id, status) VALUES(:surat_rekomendasi_id, 'Menunggu Konfirmasi');");
+            $stmt2 = $this->db->prepare("INSERT INTO pengajuan_surat (surat_rekomendasi_id, status) VALUES(:surat_rekomendasi_id, 'Menunggu Verifikasi Sekretariat');");
             $stmt2->bindParam(":surat_rekomendasi_id", $surat_rekomendasi_id);
 
             $stmt2->execute();

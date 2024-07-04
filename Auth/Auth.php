@@ -121,6 +121,7 @@ class Auth
         session_destroy();
         // Hapus user_session
         unset($_SESSION['user_session']);
+        unset($_SESSION['user_session_tipe']);
 
         return true;
     }

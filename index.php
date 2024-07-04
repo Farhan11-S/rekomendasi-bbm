@@ -133,7 +133,15 @@ if ($isSearched) {
                                     </tr>
                                     <tr>
                                         <td scope="row">Status Pengajuan</td>
-                                        <?= ($result['pengajuan_surat']['status'] == 'Aktif' ? '<td style="background-color: green; color:white">' : '<td style="background-color: red; color: white">') . $result['pengajuan_surat']['status'] . '</td>' ?>
+                                        <?php
+                                        if ($result['pengajuan_surat']['status'] == 'Aktif') {
+                                            echo '<td style="background-color: green; color:white">' . $result['pengajuan_surat']['status'] . '</td>';
+                                        } else if ($result['pengajuan_surat']['status'] == 'Ditolak') {
+                                            echo '<td style="background-color: red; color:white">' . $result['pengajuan_surat']['status'] . '</td>';
+                                        } else {
+                                            echo '<td>' . $result['pengajuan_surat']['status'] . '</td>';
+                                        }
+                                        ?>
                                     </tr>
                                     <tr>
                                         <td scope="row">Catatan</td>

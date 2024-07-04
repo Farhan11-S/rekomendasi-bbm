@@ -14,9 +14,9 @@ if (isset($_POST['signout'])) {
     }
 }
 
-if (isset($_POST['validasi'])) {
-    if ($pengajuanSurat->updateStatus($_POST['id'], $_POST['validasi'], $_POST['note'], $_SESSION['user_session'])) {
-        header("location: dashboard/validasi-surat.php");
+if (isset($_POST['status'])) {
+    if ($pengajuanSurat->updateStatus($_POST['id'], $_POST['status'], $_POST['note'], $_SESSION['user_session'])) {
+        header("location: ./validasi-surat.php");
     }
 }
 
@@ -254,30 +254,6 @@ td {
                                                 </tr>
                                             </table>
                                         </div>
-
-                                        <div style="margin-top: 18px;">
-                                            <table>
-                                                <tr style="text-align: center;">
-                                                    <td style="width: 65%;"></td>
-                                                    <td></td>
-                                                    <td>KEPALA DINAS PERTANIAN DAN PANGAN</td>
-                                                </tr>
-                                                <tr style="height: 100px">
-                                                    <td style="width: 65%;"></td>
-                                                    <td></td>
-                                                    <td><img style="margin-left: 28px;" src="../assets/TTE dipertan.png"
-                                                            alt="tte dipertan" height="186"></td>
-                                                </tr>
-                                                <tr style="text-align: center;">
-                                                    <td style="width: 65%;"></td>
-                                                    <td></td>
-                                                    <td>
-                                                        <p>Ir. DIDIK TRI PRASETYO</p>
-                                                        <p>NIP : 196611271996031002</p>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -285,8 +261,7 @@ td {
                                 <form action="" method="post" class="p-3">
                                     <input type="hidden" name="id" id="hidden_id" value="">
                                     <input type="hidden" name="note" id="hidden_note" value="">
-                                    <button type="submit" class="btn btn-success" value="Aktif" name="validasi"
-                                        data-dismiss="modal">Validasi</button>
+                                    <button type="submit" class="btn btn-success" value="Aktif" name="status">Validasi</button>
                                 </form>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
@@ -337,7 +312,7 @@ td {
         $('#jenis_usaha').text(`${jenisAlat ?? ''} - ${jenisUsaha ?? ''}`)
         $('#nama_usaha').text(curr_data.nama_usaha)
         $('#hidden_id').val(curr_data.id)
-        $('#hidden_note').val(curr_data.status)
+        $('#hidden_note').val(curr_data.note)
         $('#date').text(`Masa Berlaku Surat Rekomendasi ${date} s/d `)
         $('#myModal').modal('show')
     }
