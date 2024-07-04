@@ -53,7 +53,8 @@ $dataJenisUsaha = $pengajuanSurat->fetchAllJenisUsaha();
             </nav>
 
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Pengajuan Surat</h1>
                 </div>
 
@@ -71,12 +72,12 @@ $dataJenisUsaha = $pengajuanSurat->fetchAllJenisUsaha();
                             <?php
                             foreach ($result as $i => $row) {
                             ?>
-                                <tr onclick="openModal(<?php echo $i ?>)">
-                                    <td><?php echo $i + 1 ?></td>
-                                    <td><?php echo $row['id_input'] ?></td>
-                                    <td><?php echo $row['nama_lengkap'] ?></td>
-                                    <td><?php echo $row['status'] ?></td>
-                                </tr>
+                            <tr onclick="openModal(<?php echo $i ?>)">
+                                <td><?php echo $i + 1 ?></td>
+                                <td><?php echo $row['id_input'] ?></td>
+                                <td><?php echo $row['nama_lengkap'] ?></td>
+                                <td><?php echo $row['status'] ?></td>
+                            </tr>
                             <?php
                             }
                             ?>
@@ -84,7 +85,8 @@ $dataJenisUsaha = $pengajuanSurat->fetchAllJenisUsaha();
                     </table>
                 </div>
 
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -165,11 +167,15 @@ $dataJenisUsaha = $pengajuanSurat->fetchAllJenisUsaha();
                                     <form action="" method="post" class="p-3">
                                         <label for="note">Catatan</label>
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" id="note" name="note" aria-describedby="basic-addon3" placeholder="Masukkan catatan (required)" required>
+                                            <input type="text" class="form-control" id="note" name="note"
+                                                aria-describedby="basic-addon3"
+                                                placeholder="Masukkan catatan (required)" required>
                                         </div>
                                         <input type="hidden" name="id" id="hidden_id" value="">
-                                        <button type="submit" class="btn btn-success" name="status" value="Aktif">Terima</button>
-                                        <button type="submit" class="btn btn-danger" name="status" value="Ditolak">Tolak</button>
+                                        <button type="submit" class="btn btn-success" name="status"
+                                            value="Aktif">Terima</button>
+                                        <button type="submit" class="btn btn-danger" name="status"
+                                            value="Ditolak">Tolak</button>
                                     </form>
                                 </div>
                             </div>
@@ -189,39 +195,45 @@ $dataJenisUsaha = $pengajuanSurat->fetchAllJenisUsaha();
     <!-- Placed at the end of the document so the pages load faster -->
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
 
     <!-- Icons -->
     <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
     <script>
-        feather.replace()
-        const result = <?php echo json_encode($result) ?>;
-        const dataJenisUsaha = <?php echo json_encode($dataJenisUsaha) ?>;
+    feather.replace()
+    const result = <?php echo json_encode($result) ?>;
+    const dataJenisUsaha = <?php echo json_encode($dataJenisUsaha) ?>;
 
-        function openModal(index) {
-            const curr_data = result[index]
+    function openModal(index) {
+        const curr_data = result[index]
 
-            const jenisAlat = dataJenisUsaha.jenis_alat.find((v) => v['id'] == curr_data.jenis_usaha_id)?.['jenis_alat'];
-            const jenisUsaha = dataJenisUsaha.jenis_alat.find((v) => v['id'] == curr_data.jenis_usaha_id)?.['jenis_usaha'];
-            $('#myModalLabel').text(curr_data.id_input)
-            $('#id_input').text(curr_data.id_input)
-            $('#nama_lengkap').text(curr_data.nama_lengkap)
-            $('#nik').text(curr_data.nik)
-            $('#alamat_spbu').text(curr_data.alamat_spbu)
-            $('#tipe').text(curr_data.tipe)
-            $('#merk').text(curr_data.merk)
-            $('#jenis_usaha').text(`${jenisAlat ?? ''} - ${jenisUsaha ?? ''}`)
-            $('#nama_usaha').text(curr_data.nama_usaha)
-            $('#status').text(curr_data.status)
-            $('#hidden_id').val(curr_data.id)
-            $('#foto_ktp').attr('src', './uploads/' + curr_data.foto_ktp)
-            $('#foto_mesin').attr('src', './uploads/' + curr_data.foto_mesin)
-            $('#foto_domisili').attr('src', './uploads/' + curr_data.foto_domisili)
-            if (curr_data.status !== 'Menunggu Konfirmasi') $('#form_update').hide()
-            $('#myModal').modal('show')
-        }
+        const jenisAlat = dataJenisUsaha.jenis_alat.find((v) => v['id'] == curr_data.jenis_usaha_id)?. ['jenis_alat'];
+        const jenisUsaha = dataJenisUsaha.jenis_alat.find((v) => v['id'] == curr_data.jenis_usaha_id)?. ['jenis_usaha'];
+        $('#myModalLabel').text(curr_data.id_input)
+        $('#id_input').text(curr_data.id_input)
+        $('#nama_lengkap').text(curr_data.nama_lengkap)
+        $('#nik').text(curr_data.nik)
+        $('#alamat_spbu').text(curr_data.alamat_spbu)
+        $('#tipe').text(curr_data.tipe)
+        $('#merk').text(curr_data.merk)
+        $('#jenis_usaha').text(`${jenisAlat ?? ''} - ${jenisUsaha ?? ''}`)
+        $('#nama_usaha').text(curr_data.nama_usaha)
+        $('#status').text(curr_data.status)
+        $('#hidden_id').val(curr_data.id)
+        $('#foto_ktp').attr('src', './uploads/' + curr_data.foto_ktp)
+        $('#foto_mesin').attr('src', './uploads/' + curr_data.foto_mesin)
+        $('#foto_domisili').attr('src', './uploads/' + curr_data.foto_domisili)
+        if (curr_data.status !== 'Menunggu Konfirmasi') $('#form_update').hide()
+        $('#myModal').modal('show')
+    }
     </script>
 </body>
 

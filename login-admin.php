@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // Lampirkan dbconfig
 require_once "Auth/index.php";
@@ -16,7 +17,11 @@ if (isset($_POST['kirim'])) {
 
     // Proses login user
     if ($user->login($nama, $password)) {
-        header("location: dashboard");
+        if($_SESSION['user_session_tipe'] == 'kepala_dinas') {
+            header("location: dashboard/validasi-surat.php");
+        } else {
+            header("location: dashboard");
+        }
     } else {
         // Jika login gagal, ambil pesan error
         $error = $user->getLastError();

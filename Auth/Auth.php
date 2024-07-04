@@ -50,6 +50,7 @@ class Auth
                 // jika password yang dimasukkan sesuai dengan yg ada di database
                 if (password_verify($password, $data['password'])) {
                     $_SESSION['user_session'] = $data['id'];
+                    $_SESSION['user_session_tipe'] = $data['tipe'];
 
                     return true;
                 } else {

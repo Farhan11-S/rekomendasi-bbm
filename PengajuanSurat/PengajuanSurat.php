@@ -81,6 +81,14 @@ class PengajuanSurat
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    public function fetchAllValidasi()
+    {
+        $stmt = $this->db->prepare("SELECT * FROM surat_rekomendasi LEFT JOIN pengajuan_surat ON surat_rekomendasi.id = pengajuan_surat.surat_rekomendasi_id WHERE status='Menunggu Validasi Kepala Dinas'");
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function fetchAllJenisUsaha()
     {
